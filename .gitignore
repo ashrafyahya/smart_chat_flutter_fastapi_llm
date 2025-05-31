@@ -134,3 +134,33 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Node modules (lokale Abhängigkeiten – nie hochladen!)
+node_modules/
+
+# Build-Output – wird per ng build generiert
+dist/
+out-tsc/
+.angular/
+
+# Temporäre IDE-Dateien
+*.log
+*.tmp
+*.swp
+*.swo
+
+# VSCode-Einstellungen (optional)
+.vscode/
+
+# Umgebungsvariablen
+src/environments/*.ts
+!src/environments/environment.ts  # nur development-Config behalten
+
+# System-Dateien (Windows/macOS)
+.DS_Store
+Thumbs.db
+
+# Tests & Coverage
+coverage/
+karma-coverage/
+test-results/
