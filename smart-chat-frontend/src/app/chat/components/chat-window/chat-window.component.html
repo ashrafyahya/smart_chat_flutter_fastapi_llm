@@ -1,1 +1,16 @@
-<p>chat-window works!</p>
+<div class="chat-container">
+  <mat-card class="chat-box">
+    <mat-list>
+      <mat-list-item *ngFor="let message of messages">
+        <strong>{{ message.role }}:</strong> {{ message.content }}
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <div class="input-area">
+    <mat-form-field class="input-field" appearance="fill">
+      <input matInput [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Nachricht eingeben" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="sendMessage()">Senden</button>
+  </div>
+</div>

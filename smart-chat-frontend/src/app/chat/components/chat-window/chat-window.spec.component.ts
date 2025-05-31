@@ -1,5 +1,7 @@
+/// <reference types="jasmine" />
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { beforeEach, describe, it } from 'node:test';
+import 'zone.js/testing';
 import { ChatWindow } from './chat-window.component';
 
 describe('ChatWindow', () => {
@@ -21,3 +23,4 @@ describe('ChatWindow', () => {
     expect(component).toBeTruthy();
   });
 });
+
