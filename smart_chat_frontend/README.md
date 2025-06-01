@@ -48,7 +48,7 @@ flutter pub add --dev flutter_lints
 
 ## ▶️ Projekt starten
 Starte deine App auf einem Emulator oder echten Gerät:
-$flutter run
+```flutter run```
 ----------------------------------------------------------------------------
 -----------------------------------------------------------------
 🧱 Schritt 1: Projektstruktur planen
@@ -70,15 +70,15 @@ lib/
 
 ✅ Tooling & Linting
 Formatieren
-$flutter format .
+```flutter format .```
 
 
 Analysieren
-flutter analyze
+```flutter analyze```
 
 📱 Build für Web / Android / iOS
 Web
-$flutter build web
+```flutter build web```
 
 Dart Language
 https://dart.dev/
