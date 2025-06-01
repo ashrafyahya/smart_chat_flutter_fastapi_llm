@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'features/chat/presentation/chat_screen.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const SmartChatApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class SmartChatApp extends StatelessWidget {
+  const SmartChatApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      title: 'Smart Chat',
+      theme: ThemeData.light(useMaterial3: true),
+      home: const ChatScreen(),
     );
   }
 }
