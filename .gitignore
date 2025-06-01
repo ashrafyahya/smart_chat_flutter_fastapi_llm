@@ -157,3 +157,6 @@ Thumbs.db
 # Tests & Coverage
 karma-coverage/
 test-results/
+
+
+flutter/
