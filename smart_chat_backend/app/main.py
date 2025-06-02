@@ -1,20 +1,6 @@
-import os
-
 from fastapi import FastAPI, HTTPException
-from llama_cpp import Llama
 from pydantic import BaseModel
-
-MODEL_PATH = r"D:\Downloads\mistral-7b-openorca.gguf2.Q4_0.gguf"
-
-class LLMWrapper:
-    def __init__(self):
-        if not os.path.exists(MODEL_PATH):
-            raise FileNotFoundError(f"Model file not found at {MODEL_PATH}")
-        self.model = Llama(model_path=MODEL_PATH, n_ctx=2048)
-
-    def generate_response(self, prompt: str) -> str:
-        result = self.model(prompt, max_tokens=200)
-        return result["choices"][0]["text"].strip()
+from .model import LLMWrapper
 
 # Initialisiere App und Modell
 app = FastAPI()
@@ -24,11 +10,18 @@ llm = LLMWrapper()
 class PromptRequest(BaseModel):
     prompt: str
 
+class PromptResponse(BaseModel):
+    response: str
+
 # POST-Endpunkt für Fragen
-@app.post("/chat/")
-def chat(request: PromptRequest):
+@app.post("/generate", response_model=PromptResponse)
+def generate(request: PromptRequest):
     try:
-        response = llm.generate_response(request.prompt)
-        return {"response": response}
+        answer = llm.generate_response(request.prompt)
+        return PromptResponse(response=answer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)

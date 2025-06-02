@@ -1,4 +1,5 @@
 import os
+
 from llama_cpp import Llama
 
 MODEL_PATH = r"D:\Downloads\mistral-7b-openorca.gguf2.Q4_0.gguf"
@@ -12,9 +13,3 @@ class LLMWrapper:
     def generate_response(self, prompt: str) -> str:
         result = self.model(prompt, max_tokens=200)
         return result["choices"][0]["text"].strip()
-
-# Beispiel:
-if __name__ == "__main__":
-    llm = LLMWrapper()
-    response = llm.generate_response("Was ist die Hauptstadt von Deutschland?")
-    print("Antwort:", response)
