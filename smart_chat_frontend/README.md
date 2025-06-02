@@ -48,6 +48,7 @@ flutter pub add --dev flutter_lints
 
 ## ▶️ Projekt starten
 Starte deine App auf einem Emulator oder echten Gerät:
+```flutter build web```
 ```flutter run```
 ----------------------------------------------------------------------------
 -----------------------------------------------------------------
