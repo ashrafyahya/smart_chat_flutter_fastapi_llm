@@ -1,5 +1,7 @@
 import os
+
 from llama_cpp import Llama
+
 
 class LLMWrapper:
     def __init__(self, model_path: str):
