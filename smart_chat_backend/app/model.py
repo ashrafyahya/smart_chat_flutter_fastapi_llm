@@ -1,12 +1,20 @@
-from gpt4all import GPT4All
+import os
+from llama_cpp import Llama
 
-# Du kannst den Modellnamen anpassen, wenn du einen anderen nutzt
-MODEL_PATH = "mistral-7b-openorca.Q4_0.gguf"
+MODEL_PATH = r"D:\Downloads\mistral-7b-openorca.gguf2.Q4_0.gguf"
 
 class LLMWrapper:
     def __init__(self):
-        self.model = GPT4All(model_name=MODEL_PATH)
-        self.model.open()
+        if not os.path.exists(MODEL_PATH):
+            raise FileNotFoundError(f"Model file not found at {MODEL_PATH}")
+        self.model = Llama(model_path=MODEL_PATH, n_ctx=2048)
 
     def generate_response(self, prompt: str) -> str:
-        return self.model.generate(prompt)
+        result = self.model(prompt, max_tokens=200)
+        return result["choices"][0]["text"].strip()
+
+# Beispiel:
+if __name__ == "__main__":
+    llm = LLMWrapper()
+    response = llm.generate_response("Was ist die Hauptstadt von Deutschland?")
+    print("Antwort:", response)

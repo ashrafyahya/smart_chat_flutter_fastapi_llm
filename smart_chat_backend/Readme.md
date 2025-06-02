@@ -45,7 +45,6 @@ cd smart_chat_backend
 # Virtuelle Umgebung erstellen
 python -m venv .venv
 .venv\Scripts\activate   # Windows
-# source .venv/bin/activate  # macOS/Linux
 
 # Abhängigkeiten installieren
 pip install -r requirements.txt
