@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from .model import LLMWrapper
+from .config import MODEL_PATH, HOST, PORT
 
 # Konfiguration laden
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
@@ -34,4 +35,4 @@ def generate(request: PromptRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host=HOST, port=PORT)

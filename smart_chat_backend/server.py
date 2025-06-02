@@ -1,7 +1,8 @@
 import os
 import sys
-
 import uvicorn
+
+from app.config import APP_MODULE, HOST, PORT
 
 # Stelle sicher, dass das app-Verzeichnis im Python-Pfad ist
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "app"))
@@ -15,4 +16,4 @@ if os.path.exists(config_path):
     print(f"Starte Server mit Modell: {config.get('MODEL_PATH')}")
 
 if __name__ == "__main__":
-    uvicorn.run("app.chat:app", host="0.0.0.0", port=8001, reload=True)
+    uvicorn.run(APP_MODULE, host=HOST, port=PORT, reload=True)
