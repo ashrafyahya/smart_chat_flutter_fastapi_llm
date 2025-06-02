@@ -17,9 +17,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<ChatMessage> _messages = [];
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  bool _isLoading = false; // Ladezustand
 
   Future<String> _fetchBotResponse(String prompt) async {
-    final url = Uri.parse('http://localhost:8000/generate');
     final response = await http.post(
       Uri.parse('http://localhost:8000/generate'),
       headers: {'Content-Type': 'application/json'},
@@ -38,10 +38,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _sendMessage() async {
     final text = _controller.text.trim();
-    if (text.isEmpty) return;
+    if (text.isEmpty || _isLoading) return;
 
     setState(() {
       _messages.add(ChatMessage(text: text, sender: Sender.user));
+      _isLoading = true;
+      // Lade-Bubble anzeigen
+      _messages.add(ChatMessage(text: '...', sender: Sender.bot));
     });
 
     _controller.clear();
@@ -59,7 +62,13 @@ class _ChatScreenState extends State<ChatScreen> {
     final botReply = await _fetchBotResponse(text);
 
     setState(() {
+      // Lade-Bubble entfernen
+      if (_messages.isNotEmpty && _messages.last.text == '...' && _messages.last.sender == Sender.bot) {
+        _messages.removeLast();
+      }
+      // Bot-Antwort hinzufügen
       _messages.add(ChatMessage(text: botReply, sender: Sender.bot));
+      _isLoading = false;
     });
 
     // Scrollen nach Bot-Message

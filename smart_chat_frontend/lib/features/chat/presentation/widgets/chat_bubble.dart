@@ -23,7 +23,7 @@ class ChatBubble extends StatelessWidget {
             CircleAvatar(
               radius: 16,
               backgroundColor: Colors.grey[300],
-              child: const Icon(Icons.rocket_outlined, color: Colors.black54),
+              child: const Icon(Icons.rocket_rounded , color: Colors.black54),
             ),
           if (!isUser) const SizedBox(width: 8),
 
