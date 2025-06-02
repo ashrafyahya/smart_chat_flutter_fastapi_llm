@@ -3,18 +3,23 @@ import os
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 from .model import LLMWrapper
-from .config import MODEL_PATH, HOST, PORT
-
-# Konfiguration laden
-CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
-with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-    config = json.load(f)
-MODEL_PATH = config["MODEL_PATH"]
+from config import MODEL_PATH, HOST, PORT
 
 # Initialisiere App und Modell
 app = FastAPI()
+
+# CORS aktivieren (für Entwicklung: alle Ursprünge erlauben)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Für Produktion gezielt setzen!
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 llm = LLMWrapper(MODEL_PATH)
 
 # Request-Body-Schema

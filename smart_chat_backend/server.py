@@ -2,7 +2,7 @@ import os
 import sys
 
 import uvicorn
-from app.config import APP_MODULE, HOST, MODEL_PATH, PORT
+from config import APP_MODULE, HOST, MODEL_PATH, PORT
 
 # Stelle sicher, dass das app-Verzeichnis im Python-Pfad ist
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "app"))
