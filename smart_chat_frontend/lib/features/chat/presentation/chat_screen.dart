@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
+import '../data/chat_api.dart'; // <--- Importiere die neue API-Datei
 import '../domain/chat_message.dart';
 import 'widgets/chat_bubble.dart';
 
@@ -18,23 +16,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false; // Ladezustand
-
-  Future<String> _fetchBotResponse(String prompt) async {
-    final response = await http.post(
-      Uri.parse('http://localhost:8000/generate'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'prompt': prompt}),
-    );
-
-    if (response.statusCode == 200) {
-      // Annahme: Die Antwort ist ein JSON mit {"response": "..."}
-      final data = jsonDecode(response.body);
-      // Passe das hier ggf. an das tatsächliche Response-Format an:
-      return data['response'] ?? response.body;
-    } else {
-      return 'Fehler vom Server (${response.statusCode})';
-    }
-  }
 
   void _sendMessage() async {
     final text = _controller.text.trim();
@@ -58,8 +39,8 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     });
 
-    // Bot-Antwort holen
-    final botReply = await _fetchBotResponse(text);
+    // Verwende die neue API-Funktion
+    final botReply = await ChatApi.fetchBotResponse(text);
 
     setState(() {
       // Lade-Bubble entfernen
