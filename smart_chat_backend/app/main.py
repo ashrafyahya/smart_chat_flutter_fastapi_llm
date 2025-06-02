@@ -1,10 +1,19 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import json
+import os
+
 from .model import LLMWrapper
+
+# Konfiguration laden
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
+with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    config = json.load(f)
+MODEL_PATH = config["MODEL_PATH"]
 
 # Initialisiere App und Modell
 app = FastAPI()
-llm = LLMWrapper()
+llm = LLMWrapper(MODEL_PATH)
 
 # Request-Body-Schema
 class PromptRequest(BaseModel):
@@ -24,4 +33,4 @@ def generate(request: PromptRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
