@@ -1,13 +1,13 @@
-# 🧠 LLM Chat Backend (FastAPI + GPT4All)
+# 🧠 LLM Chat Backend (FastAPI + llama.cpp)
 
-Ein leichtgewichtiges, vollständig **offline** laufendes Backend für ein Smart-Chat-System mit einem lokalen LLM (Large Language Model), wie z. B. **GPT4All** oder **LLaMA (gguf)**.  
+Ein leichtgewichtiges, vollständig **offline** laufendes Backend für ein Smart-Chat-System mit einem lokalen LLM (Large Language Model), z. B. **LLaMA (gguf)** über [llama.cpp](https://github.com/ggerganov/llama.cpp).  
 Ideal für Flutter-Apps oder andere Clients, die lokal mit einem Chatmodell kommunizieren sollen.
 
 ---
 
 ## 🎯 Ziel
 
-- Bereitstellung einer HTTP-API (`/chat`) zur Kommunikation mit einem lokalen KI-Modell.
+- Bereitstellung einer HTTP-API (`/generate`) zur Kommunikation mit einem lokalen KI-Modell.
 - Offline-Nutzung ohne Internet.
 - Schnelle Antworten durch quantisierte Modelle (gguf).
 - Modularer Aufbau für spätere Integration mit anderen Modellen (transformers, llama.cpp, etc.).
@@ -19,66 +19,70 @@ Ideal für Flutter-Apps oder andere Clients, die lokal mit einem Chatmodell komm
 ```plaintext
 smart_chat_backend/
 ├── app/
-│   ├── main.py          # FastAPI entrypoint
-│   ├── model.py         # Modellanbindung GPT4All / LLaMA
-│   └── schemas.py       # Datenmodelle (Pydantic)
+│   ├── chat.py          # FastAPI entrypoint
+│   ├── model.py         # Modellanbindung llama.cpp
+├── config.py            # Projektweite Konfiguration (Modellpfad, Host, Port)
 ├── requirements.txt     # Python-Abhängigkeiten
+├── server.py            # Startet den Server
 └── README.md            # Dieses Dokument
+```
 
+---
 
-🚀 Installation
+## 🚀 Installation
+
 1. 📦 Voraussetzungen
 
-    Python 3.9+
-
-    Windows, macOS oder Linux
-
-    mind. 8 GB RAM empfohlen (je nach Modell)
-
-
+    - Python 3.9+
+    - Windows, macOS oder Linux
+    - mind. 8 GB RAM empfohlen (je nach Modell)
 
 2. 🔧 Setup
-# Projekt klonen oder neu anlegen
-git clone <dieses-repo> smart_chat_backend
-cd smart_chat_backend
 
-# Virtuelle Umgebung erstellen
-python -m venv .venv
-.venv\Scripts\activate   # Windows
+    ```sh
+    # Projekt klonen oder neu anlegen
+    git clone <dieses-repo> smart_chat_backend
+    cd smart_chat_backend
 
-# Abhängigkeiten installieren
-pip install -r requirements.txt
+    # Virtuelle Umgebung erstellen
+    python -m venv .venv
+    .venv\Scripts\activate   # Windows
 
+    # Abhängigkeiten installieren
+    pip install -r requirements.txt
+    ```
 
 3. 🧠 Modell vorbereiten
-GPT4All-Modell
 
-    Lade ein Modell von https://gpt4all.io/models herunter.
-    Beispiel: mistral-7b-openorca.Q4_0.gguf
+    - Lade ein GGUF-Modell von z.B. [TheBloke](https://huggingface.co/TheBloke) oder anderen Quellen herunter.
+    - Beispiel: mistral-7b-openorca.Q4_0.gguf
+    - Passe den Pfad in `config.py` an:
+      ```python
+      MODEL_PATH = "Pfad/zum/deinem/modell.gguf"
+      ```
 
-    Platziere das Modell im GPT4All-Verzeichnis:
-    C:\Users\<DeinBenutzer>\.gpt4all\models\
-    oder passe den Pfad in app/model.py an:
-    MODEL_PATH = "Pfad/zum/deinem/modell.gguf"
+---
 
+## ▶️ Starten des Servers
 
-▶️ Starten des Servers
-uvicorn app.main:app --reload
+```sh
+python server.py
+```
 
-
-Läuft auf:
+Läuft auf:  
 📍 http://127.0.0.1:8000
 
-Swagger-Doku (Testoberfläche):
+Swagger-Doku (Testoberfläche):  
 📄 http://127.0.0.1:8000/docs
----------------------------------------------------------------------
-Server starten:
-$python server.py
 
+---
 
-Anfrage an Server schicken:
+## Anfrage an Server schicken
+
+```sh
 curl -X POST "http://localhost:8000/generate" ^
      -H "Content-Type: application/json" ^
      -d "{\"prompt\": \"Was ist die Hauptstadt von Deutschland?\"}"
+```
 
 
