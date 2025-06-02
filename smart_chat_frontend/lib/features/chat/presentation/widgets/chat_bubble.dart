@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../domain/chat_message.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -11,7 +12,10 @@ class ChatBubble extends StatelessWidget {
     final isUser = message.sender == Sender.user;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 350, vertical: 5),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.20, // 10% der Breite
+        vertical: 5,
+      ),
       child: Row(
         mainAxisAlignment: isUser
             ? MainAxisAlignment.end
@@ -47,7 +51,9 @@ class ChatBubble extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Text(message.text),
+              child: (message.text.isEmpty && !isUser)
+                  ? const _LoadingDots()
+                  : Text(message.text),
             ),
           ),
 
@@ -61,6 +67,50 @@ class ChatBubble extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+class _LoadingDots extends StatefulWidget {
+  const _LoadingDots();
+
+  @override
+  State<_LoadingDots> createState() => _LoadingDotsState();
+}
+
+class _LoadingDotsState extends State<_LoadingDots> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<int> _dotCount;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 900),
+      vsync: this,
+    )..repeat();
+    _dotCount = StepTween(begin: 1, end: 3).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.linear),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _dotCount,
+      builder: (context, child) {
+        final dots = '.' * _dotCount.value;
+        return Text(
+          dots,
+          style: const TextStyle(fontSize: 20, color: Colors.black54, letterSpacing: 2),
+        );
+      },
     );
   }
 }

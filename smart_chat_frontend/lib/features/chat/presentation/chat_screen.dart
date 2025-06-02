@@ -24,8 +24,8 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       _messages.add(ChatMessage(text: text, sender: Sender.user));
       _isLoading = true;
-      // Lade-Bubble anzeigen
-      _messages.add(ChatMessage(text: '...', sender: Sender.bot));
+      // Lade-Bubble anzeigen (leerer Text, spezieller Ladezustand)
+      _messages.add(ChatMessage(text: '', sender: Sender.bot));
     });
 
     _controller.clear();
@@ -39,12 +39,18 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     });
 
-    // Verwende die neue API-Funktion
-    final botReply = await ChatApi.fetchBotResponse(text);
+    // Verwende die neue API-Funktion und fange mögliche Fehler ab
+    var botReply;
+    try {
+      botReply = await ChatApi.fetchBotResponse(text);
+    } catch (e) {
+      print('Error fetching bot response: $e');
+      botReply = 'Entschuldigung, es gab einen Fehler.';
+    }
 
     setState(() {
       // Lade-Bubble entfernen
-      if (_messages.isNotEmpty && _messages.last.text == '...' && _messages.last.sender == Sender.bot) {
+      if (_messages.isNotEmpty && _messages.last.text == '' && _messages.last.sender == Sender.bot && _isLoading) {
         _messages.removeLast();
       }
       // Bot-Antwort hinzufügen
