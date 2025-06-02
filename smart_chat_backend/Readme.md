@@ -71,3 +71,16 @@ Läuft auf:
 
 Swagger-Doku (Testoberfläche):
 📄 http://127.0.0.1:8000/docs
+---------------------------------------------------------------------
+Server starten:
+$python -m app.main
+$python main.py #im app-Verzeichnis
+$uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+
+Anfrage an Server schicken:
+curl -X POST "http://localhost:8000/generate" ^
+     -H "Content-Type: application/json" ^
+     -d "{\"prompt\": \"Was ist die Hauptstadt von Deutschland?\"}"
+
+
