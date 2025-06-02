@@ -1,12 +1,12 @@
 import json
 import os
 
+from config import HOST, MODEL_PATH, PORT
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 from .model import LLMWrapper
-from config import MODEL_PATH, HOST, PORT
 
 # Initialisiere App und Modell
 app = FastAPI()
