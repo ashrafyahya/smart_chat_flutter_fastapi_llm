@@ -68,6 +68,7 @@ smart_chat_backend/
 ```sh
 python server.py
 ```
+Mit --reload: Server startet bei jeder Änderung automatisch neu (nur für Entwicklung empfohlen)
 
 Läuft auf:  
 📍 http://127.0.0.1:8000
