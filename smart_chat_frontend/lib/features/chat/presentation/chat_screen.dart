@@ -51,7 +51,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
     setState(() {
       // Lade-Bubble entfernen
-      if (_messages.isNotEmpty && _messages.last.text == '' && _messages.last.sender == Sender.bot && _isLoading) {
+      if (_messages.isNotEmpty &&
+          _messages.last.text == '' &&
+          _messages.last.sender == Sender.bot &&
+          _isLoading) {
         _messages.removeLast();
       }
       // Bot-Antwort hinzufügen
@@ -96,16 +99,16 @@ class _ChatScreenState extends State<ChatScreen> {
                       'Willkomen bei Smart Chat',
                       style: TextStyle(fontSize: 18, color: Colors.grey),
                     ),
-              )
-            : Stack(
-                children: [
-                  ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _messages.length,
-                    itemBuilder: (context, index) =>
-                        ChatBubble(message: _messages[index]),
-                  ),
-                  Positioned(
+                  )
+                : Stack(
+                    children: [
+                      ListView.builder(
+                        controller: _scrollController,
+                        itemCount: _messages.length,
+                        itemBuilder: (context, index) =>
+                            ChatBubble(message: _messages[index]),
+                      ),
+                      Positioned(
                         top: MediaQuery.of(context).size.height * 0.1,
                         right: MediaQuery.of(context).size.width * 0.08,
                         child: Row(
@@ -148,11 +151,12 @@ class _ChatScreenState extends State<ChatScreen> {
             // Changed TextField to allow dynamic height and removed fixed padding
             child: TextField(
               controller: _controller,
-              onSubmitted: (_) => _sendMessage(),
+              onEditingComplete: _sendMessage, // Send message on Enter
               minLines: 4,
               maxLines: null,
               keyboardType: TextInputType.multiline,
-              maxLength: 1000, // added limit for max 1000 letters
+              textInputAction: TextInputAction.done, // Signals "done"/submit
+              maxLength: 1000,
               decoration: InputDecoration(
                 hintText: 'Nachricht eingeben...',
                 border: OutlineInputBorder(
@@ -163,7 +167,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   onPressed: _sendMessage,
                   color: Colors.blue[600],
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 12,
+                ),
               ),
             ),
           ),
