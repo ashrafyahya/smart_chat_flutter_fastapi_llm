@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart'; // Added import for exporting chat
 
 import '../data/chat_api.dart'; // <--- Importiere die neue API-Datei
 import '../domain/chat_message.dart';
@@ -68,16 +69,14 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  // Added method to export chat as .txt file.
+  // Modified method to export chat as .txt file.
   void _shareChat() async {
     final buffer = StringBuffer();
     for (var msg in _messages) {
       final sender = msg.sender == Sender.user ? 'User' : 'Bot';
       buffer.writeln('$sender: ${msg.text}');
     }
-    // Export logic here (e.g., using Share.share from share_plus package).
-    // await Share.share(buffer.toString(), subject: 'Chat Export');
-    print('Exported chat:\n${buffer.toString()}'); // Temporary implementation.
+    await Share.share(buffer.toString(), subject: 'Chat Export');
   }
 
   @override
