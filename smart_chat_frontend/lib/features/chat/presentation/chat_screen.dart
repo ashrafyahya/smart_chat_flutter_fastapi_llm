@@ -163,7 +163,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onPressed: _sendMessage,
                   color: Colors.blue[600],
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
             ),
           ),
