@@ -139,7 +139,6 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           // White field that frames the input field with 10% screen height
           Container(
-            height: MediaQuery.of(context).size.height * 0.20,
             margin: EdgeInsets.only(
               left: MediaQuery.of(context).size.width * 0.2,
               right: MediaQuery.of(context).size.width * 0.2,
@@ -151,10 +150,13 @@ class _ChatScreenState extends State<ChatScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            // Changed from Row to a single TextField with a suffixIcon.
+            // Changed TextField to allow dynamic height and removed fixed padding
             child: TextField(
               controller: _controller,
               onSubmitted: (_) => _sendMessage(),
+              minLines: 1,
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: 'Nachricht eingeben...',
                 border: OutlineInputBorder(
@@ -165,11 +167,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   onPressed: _sendMessage,
                   color: Colors.blue[600],
                 ),
-                // Removed static vertical padding to keep flexibility
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: MediaQuery.of(context).size.height * 0.20,
-                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
               ),
             ),
           ),
