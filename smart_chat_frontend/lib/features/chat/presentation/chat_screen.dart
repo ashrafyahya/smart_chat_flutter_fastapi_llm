@@ -104,15 +104,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemCount: _messages.length,
                     itemBuilder: (context, index) =>
                         ChatBubble(message: _messages[index]),
-                    padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.2,
-                      right: MediaQuery.of(context).size.width * 0.2,
-                      bottom: MediaQuery.of(context).size.height * 0.2,
-                    ),
                   ),
                   Positioned(
                         top: MediaQuery.of(context).size.height * 0.1,
-                        right: MediaQuery.of(context).size.width * 0.1,
+                        right: MediaQuery.of(context).size.width * 0.08,
                         child: Row(
                           children: [
                             IconButton(
@@ -149,14 +144,15 @@ class _ChatScreenState extends State<ChatScreen> {
               border: Border.all(color: const Color.fromARGB(255, 80, 80, 80)),
               borderRadius: BorderRadius.circular(12),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             // Changed TextField to allow dynamic height and removed fixed padding
             child: TextField(
               controller: _controller,
               onSubmitted: (_) => _sendMessage(),
-              minLines: 1,
+              minLines: 4,
               maxLines: null,
               keyboardType: TextInputType.multiline,
+              maxLength: 1000, // added limit for max 1000 letters
               decoration: InputDecoration(
                 hintText: 'Nachricht eingeben...',
                 border: OutlineInputBorder(
