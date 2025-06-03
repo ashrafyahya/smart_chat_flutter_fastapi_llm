@@ -79,12 +79,19 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: _messages.length,
-              itemBuilder: (context, index) =>
-                  ChatBubble(message: _messages[index]),
-            ),
+            child: _messages.isEmpty
+                ? const Center(
+                    child: Text(
+                      'Welcome to the smart chat',
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _messages.length,
+                    itemBuilder: (context, index) =>
+                        ChatBubble(message: _messages[index]),
+                  ),
           ),
           const Divider(height: 1),
           Container(
