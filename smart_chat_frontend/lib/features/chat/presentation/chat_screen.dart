@@ -74,7 +74,20 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: const Text('Smart Chat'),
         centerTitle: true,
-        backgroundColor: Colors.blue[700],
+        backgroundColor: const Color.fromARGB(255, 48, 139, 230),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            padding: const EdgeInsets.only(right: 200.0, bottom:-600.0),
+            color: Colors.blueAccent,
+            tooltip: 'Clear Chat',
+            onPressed: () {
+              setState(() {
+                _messages.clear();
+              });
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
