@@ -75,19 +75,6 @@ class _ChatScreenState extends State<ChatScreen> {
         title: const Text('Smart Chat'),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 48, 139, 230),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete),
-            padding: const EdgeInsets.only(right: 200.0, bottom:-600.0),
-            color: Colors.blueAccent,
-            tooltip: 'Clear Chat',
-            onPressed: () {
-              setState(() {
-                _messages.clear();
-              });
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -99,11 +86,27 @@ class _ChatScreenState extends State<ChatScreen> {
                       style: TextStyle(fontSize: 18, color: Colors.grey),
                     ),
                   )
-                : ListView.builder(
-                    controller: _scrollController,
-                    itemCount: _messages.length,
-                    itemBuilder: (context, index) =>
-                        ChatBubble(message: _messages[index]),
+                : Row(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: _messages.length,
+                          itemBuilder: (context, index) =>
+                              ChatBubble(message: _messages[index]),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        color: Colors.blueAccent,
+                        tooltip: 'Clear Chat',
+                        onPressed: () {
+                          setState(() {
+                            _messages.clear();
+                          });
+                        },
+                      ),
+                    ],
                   ),
           ),
           const Divider(height: 1),
