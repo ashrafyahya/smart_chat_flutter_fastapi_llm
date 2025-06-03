@@ -68,6 +68,18 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  // Added method to export chat as .txt file.
+  void _shareChat() async {
+    final buffer = StringBuffer();
+    for (var msg in _messages) {
+      final sender = msg.sender == Sender.user ? 'User' : 'Bot';
+      buffer.writeln('$sender: ${msg.text}');
+    }
+    // Export logic here (e.g., using Share.share from share_plus package).
+    // await Share.share(buffer.toString(), subject: 'Chat Export');
+    print('Exported chat:\n${buffer.toString()}'); // Temporary implementation.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,25 +98,37 @@ class _ChatScreenState extends State<ChatScreen> {
                       style: TextStyle(fontSize: 18, color: Colors.grey),
                     ),
                   )
-                : Row(
+                : Stack(
                     children: [
-                      Expanded(
-                        child: ListView.builder(
-                          controller: _scrollController,
-                          itemCount: _messages.length,
-                          itemBuilder: (context, index) =>
-                              ChatBubble(message: _messages[index]),
-                        ),
+                      ListView.builder(
+                        controller: _scrollController,
+                        itemCount: _messages.length,
+                        itemBuilder: (context, index) =>
+                            ChatBubble(message: _messages[index]),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        color: Colors.blueAccent,
-                        tooltip: 'Clear Chat',
-                        onPressed: () {
-                          setState(() {
-                            _messages.clear();
-                          });
-                        },
+                      Positioned(
+                        top: MediaQuery.of(context).size.height * 0.1,
+                        right: MediaQuery.of(context).size.width * 0.1,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              color: Colors.blueAccent,
+                              tooltip: 'Clear Chat',
+                              onPressed: () {
+                                setState(() {
+                                  _messages.clear();
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.share),
+                              color: Colors.blueAccent,
+                              tooltip: 'Share Chat',
+                              onPressed: _shareChat,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
