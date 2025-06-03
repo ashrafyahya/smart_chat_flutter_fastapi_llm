@@ -151,32 +151,26 @@ class _ChatScreenState extends State<ChatScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    onSubmitted: (_) => _sendMessage(),
-                    decoration: InputDecoration(
-                      hintText: 'Nachricht eingeben...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      // Removed 'const' to allow dynamic calculation.
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: MediaQuery.of(context).size.height * 0.20, // changed from fixed 30
-                      ),
-                    ),
-                  ),
+            // Changed from Row to a single TextField with a suffixIcon.
+            child: TextField(
+              controller: _controller,
+              onSubmitted: (_) => _sendMessage(),
+              decoration: InputDecoration(
+                hintText: 'Nachricht eingeben...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(width: 8),
-                IconButton(
+                suffixIcon: IconButton(
                   icon: const Icon(Icons.send),
                   onPressed: _sendMessage,
                   color: Colors.blue[600],
                 ),
-              ],
+                // Removed static vertical padding to keep flexibility
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: MediaQuery.of(context).size.height * 0.20,
+                ),
+              ),
             ),
           ),
         ],
