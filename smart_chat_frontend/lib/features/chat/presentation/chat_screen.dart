@@ -93,7 +93,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: _messages.isEmpty
                 ? const Center(
                     child: Text(
-                      'Welcome to the smart chat',
+                      'Willkomen bei Smart Chat',
                       style: TextStyle(fontSize: 18, color: Colors.grey),
                     ),
                   )
