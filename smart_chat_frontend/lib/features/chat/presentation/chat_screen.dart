@@ -96,16 +96,21 @@ class _ChatScreenState extends State<ChatScreen> {
                       'Willkomen bei Smart Chat',
                       style: TextStyle(fontSize: 18, color: Colors.grey),
                     ),
-                  )
-                : Stack(
-                    children: [
-                      ListView.builder(
-                        controller: _scrollController,
-                        itemCount: _messages.length,
-                        itemBuilder: (context, index) =>
-                            ChatBubble(message: _messages[index]),
-                      ),
-                      Positioned(
+              )
+            : Stack(
+                children: [
+                  ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _messages.length,
+                    itemBuilder: (context, index) =>
+                        ChatBubble(message: _messages[index]),
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.2,
+                      right: MediaQuery.of(context).size.width * 0.2,
+                      bottom: MediaQuery.of(context).size.height * 0.2,
+                    ),
+                  ),
+                  Positioned(
                         top: MediaQuery.of(context).size.height * 0.1,
                         right: MediaQuery.of(context).size.width * 0.1,
                         child: Row(
@@ -132,9 +137,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     ],
                   ),
           ),
-          const Divider(height: 1),
+          // White field that frames the input field with 10% screen height
           Container(
-            color: Colors.white,
+            height: MediaQuery.of(context).size.height * 0.20,
+            margin: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * 0.2,
+              right: MediaQuery.of(context).size.width * 0.2,
+              bottom: MediaQuery.of(context).size.height * 0.05,
+            ),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 255, 255, 255),
+              border: Border.all(color: const Color.fromARGB(255, 80, 80, 80)),
+              borderRadius: BorderRadius.circular(12),
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Row(
               children: [
@@ -147,9 +162,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
+                      // Removed 'const' to allow dynamic calculation.
+                      contentPadding: EdgeInsets.symmetric(
                         horizontal: 12,
-                        vertical: 10,
+                        vertical: MediaQuery.of(context).size.height * 0.20, // changed from fixed 30
                       ),
                     ),
                   ),
