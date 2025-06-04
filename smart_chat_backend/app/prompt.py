@@ -1,4 +1,5 @@
 import asyncio
+
 from config import MODEL_PATH
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -50,7 +51,7 @@ async def generate(request: PromptRequest):
         context_str += "\n"
 
     # Pass the user's question unchanged, but instruct the model to summarize its answer
-    summary_instruction = "Please answer with a concise summary."
+    summary_instruction = "Answer with a abbreviated summary."
     prompt_for_model = f"{context_str}Current question:\n{user_prompt}\n\n{summary_instruction}"
 
     # Check cache for existing response to the prompt
@@ -58,6 +59,7 @@ async def generate(request: PromptRequest):
         answer = response_cache[prompt_for_model]
     else:
         try:
+            print("Generating answer for prompt...")  # Print message to console
             # Asynchronous processing (if generate_response is IO-bound)
             loop = asyncio.get_event_loop()
             answer = await loop.run_in_executor(None, llm.generate_response, prompt_for_model)
