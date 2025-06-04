@@ -51,17 +51,21 @@ async def generate(request: PromptRequest):
         raise HTTPException(status_code=429, detail="Too many requests. Please wait a moment.")
     request_times.append(now)
 
+    # Pass the user's question unchanged, but instruct the model to summarize its answer
+    user_prompt = request.prompt
+    summary_instruction = "\n\nPlease answer with a concise summary."
+    prompt_for_model = f"{user_prompt}{summary_instruction}"
+
     # Check cache for existing response to the prompt
-    prompt = request.prompt
-    if prompt in response_cache:
-        return PromptResponse(response=response_cache[prompt])
+    if prompt_for_model in response_cache:
+        return PromptResponse(response=response_cache[prompt_for_model])
 
     try:
         # Asynchronous processing (if generate_response is IO-bound)
         loop = asyncio.get_event_loop()
-        answer = await loop.run_in_executor(None, llm.generate_response, prompt)
+        answer = await loop.run_in_executor(None, llm.generate_response, prompt_for_model)
         # Cache the response
-        response_cache[prompt] = answer
+        response_cache[prompt_for_model] = answer
         return PromptResponse(response=answer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
