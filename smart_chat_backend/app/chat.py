@@ -3,7 +3,7 @@ import json
 import os
 from time import time
 
-from config import HOST, MODEL_PATH, PORT
+from config import HOST, MODEL_PATH, PORT, RATE_LIMIT, RATE_PERIOD
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -35,8 +35,6 @@ class PromptResponse(BaseModel):
     response: str
 
 # Simple rate limiting (e.g., max. 5 requests per 10 seconds)
-RATE_LIMIT = 5
-RATE_PERIOD = 10  # seconds
 request_times = []
 
 # Simple in-memory cache for responses
