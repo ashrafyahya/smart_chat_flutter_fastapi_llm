@@ -87,4 +87,7 @@ https://dart.dev/
 
 Eigene Notizen
 - start ms-settings:developers
+- flutter pub outdated
+- flutter pub upgrade
+- flutter pub upgrade --major-versions
 - 
