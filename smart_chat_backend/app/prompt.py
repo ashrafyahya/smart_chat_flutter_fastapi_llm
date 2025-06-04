@@ -51,7 +51,10 @@ async def generate(request: PromptRequest):
         context_str += "\n"
 
     # Pass the user's question unchanged, but instruct the model to summarize its answer
-    summary_instruction = "Answer with a abbreviated summary."
+    summary_instruction = (
+        "Answer with an abbreviated summary. "
+        "Respone in the same language as the question."
+    )
     prompt_for_model = f"{context_str}Current question:\n{user_prompt}\n\n{summary_instruction}"
 
     # Check cache for existing response to the prompt
