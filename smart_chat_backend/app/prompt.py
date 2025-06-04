@@ -4,6 +4,7 @@ from config import MODEL_PATH
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from model import LLMWrapper
+from memory import Memory
 from pydantic import BaseModel
 
 # Initialize FastAPI app and model
@@ -22,6 +23,9 @@ app.add_middleware(
 # Instantiate the language model wrapper with the given model path
 llm = LLMWrapper(MODEL_PATH)
 
+# Initialize memory
+memory = Memory(context_window_size=3)
+
 # Request body schema for prompt input
 class PromptRequest(BaseModel):
     prompt: str
@@ -30,23 +34,16 @@ class PromptRequest(BaseModel):
 class PromptResponse(BaseModel):
     response: str
 
-# Simple in-memory cache for responses
-response_cache = {}
-
-# Store the last 3 question-answer pairs for context window memory
-context_window = []
-
 # POST endpoint for generating responses to prompts
 async def generate(request: PromptRequest):
-    # Context window: remember last 3 question-answer pairs
-    global context_window
     user_prompt = request.prompt
 
     # Build context string from last 3 QA pairs
+    context = memory.get_context()
     context_str = ""
-    if context_window:
+    if context:
         context_str = "Previous conversation:\n"
-        for qa in context_window:
+        for qa in context:
             context_str += f"Q: {qa['question']}\nA: {qa['answer']}\n"
         context_str += "\n"
 
@@ -58,22 +55,18 @@ async def generate(request: PromptRequest):
     prompt_for_model = f"{context_str}Current question:\n{user_prompt}\n\n{summary_instruction}"
 
     # Check cache for existing response to the prompt
-    if prompt_for_model in response_cache:
-        answer = response_cache[prompt_for_model]
-    else:
+    answer = memory.get_cached_response(prompt_for_model)
+    if answer is None:
         try:
             print("Generating answer for prompt...")  # Print message to console
             # Asynchronous processing (if generate_response is IO-bound)
             loop = asyncio.get_event_loop()
             answer = await loop.run_in_executor(None, llm.generate_response, prompt_for_model)
-            # Cache the response
-            response_cache[prompt_for_model] = answer
+            memory.set_cached_response(prompt_for_model, answer)
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
     # Update context window with the new QA pair
-    context_window.append({"question": user_prompt, "answer": answer})
-    if len(context_window) > 3:
-        context_window = context_window[-3:]
+    memory.add_context(user_prompt, answer)
 
     return PromptResponse(response=answer)
