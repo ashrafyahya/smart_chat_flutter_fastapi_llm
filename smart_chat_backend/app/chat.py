@@ -1,43 +1,74 @@
+import asyncio
 import json
 import os
+from time import time
 
 from config import HOST, MODEL_PATH, PORT
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from .model import LLMWrapper
 
-# Initialisiere App und Modell
+# Initialize FastAPI app and model
 app = FastAPI()
 
-# CORS aktivieren (für Entwicklung: alle Ursprünge erlauben)
+# Enable CORS (for development: allow all origins)
+# In production, set allowed origins specifically!
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Für Produktion gezielt setzen!
+    allow_origins=["*"],  # Set this specifically for production!
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Instantiate the language model wrapper with the given model path
 llm = LLMWrapper(MODEL_PATH)
 
-# Request-Body-Schema
+# Request body schema for prompt input
 class PromptRequest(BaseModel):
     prompt: str
 
+# Response body schema for generated response
 class PromptResponse(BaseModel):
     response: str
 
-# POST-Endpunkt für Fragen
+# Simple rate limiting (e.g., max. 5 requests per 10 seconds)
+RATE_LIMIT = 5
+RATE_PERIOD = 10  # seconds
+request_times = []
+
+# Simple in-memory cache for responses
+response_cache = {}
+
+# POST endpoint for generating responses to prompts
 @app.post("/generate", response_model=PromptResponse)
-def generate(request: PromptRequest):
+async def generate(request: PromptRequest):
+    # Rate limiting: remove old timestamps and check if limit is exceeded
+    now = time()
+    global request_times
+    request_times = [t for t in request_times if now - t < RATE_PERIOD]
+    if len(request_times) >= RATE_LIMIT:
+        raise HTTPException(status_code=429, detail="Too many requests. Please wait a moment.")
+    request_times.append(now)
+
+    # Check cache for existing response to the prompt
+    prompt = request.prompt
+    if prompt in response_cache:
+        return PromptResponse(response=response_cache[prompt])
+
     try:
-        answer = llm.generate_response(request.prompt)
+        # Asynchronous processing (if generate_response is IO-bound)
+        loop = asyncio.get_event_loop()
+        answer = await loop.run_in_executor(None, llm.generate_response, prompt)
+        # Cache the response
+        response_cache[prompt] = answer
         return PromptResponse(response=answer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# Run the app with Uvicorn if this file is executed directly
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host=HOST, port=PORT)
