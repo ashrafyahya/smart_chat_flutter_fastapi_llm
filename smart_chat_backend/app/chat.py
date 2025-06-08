@@ -33,7 +33,7 @@ async def generate_response(request: PromptRequest):
         raise HTTPException(status_code=429, detail="Too many requests. Please wait a moment.")
     request_times.append(now)
 
-    # Stream response using the imported stream_generate function
+    # Stream response using the imported generate function
     return await generate(request)
 
 # Run the app with Uvicorn if this file is executed directly
