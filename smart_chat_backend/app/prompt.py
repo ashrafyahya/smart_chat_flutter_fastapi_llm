@@ -1,11 +1,11 @@
 import asyncio
-from fastapi.responses import StreamingResponse
 
 from config import MODEL_PATH
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from model import LLMWrapper
+from fastapi.responses import StreamingResponse
 from memory import Memory
+from model import LLMWrapper
 from pydantic import BaseModel
 
 # Initialize FastAPI app and model
@@ -46,8 +46,9 @@ async def generate(request: PromptRequest):
             context_str += f"Q: {qa['question']}\nA: {qa['answer']}\n"
         context_str += "\n"
     summary_instruction = (
-        "Answer with an abbreviated summary. "
-        "Respone in the same language as the question."
+        "Answer only once, strictly in the same language as the question. "
+        "Start directly with the answer, without any introductory phrases or explanations. "
+        "Do not translate or repeat the question or answer unless the user explicitly asks for a translation or repetition."
     )
     prompt_for_model = f"{context_str}Current question:\n{user_prompt}\n\n{summary_instruction}"
 
