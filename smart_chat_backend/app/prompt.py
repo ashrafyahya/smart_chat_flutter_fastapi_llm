@@ -56,8 +56,17 @@ async def generate(request: PromptRequest):
     # No caching for streaming (optional: implement if needed)
     def token_stream():
         try:
+            first_non_whitespace_yielded = False
             for token in llm.generate_response(prompt_for_model):
-                yield token
+                if not first_non_whitespace_yielded:
+                    # Skip leading whitespace tokens
+                    if token.strip() == "":
+                        continue
+                    else:
+                        first_non_whitespace_yielded = True
+                        yield token
+                else:
+                    yield token
         except Exception as e:
             yield f"\n[Error: {str(e)}]"
 
