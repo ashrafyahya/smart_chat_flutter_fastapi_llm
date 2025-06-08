@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import '../../domain/chat_message.dart';
 
+/// Widget that displays a chat message bubble.
+/// Shows different styles for user and bot messages.
 class ChatBubble extends StatelessWidget {
   final ChatMessage message;
 
@@ -14,7 +16,7 @@ class ChatBubble extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.20, // 10% der Breite
+        horizontal: MediaQuery.of(context).size.width * 0.20, // 20% of the width
         vertical: 5,
       ),
       child: Column(
@@ -24,7 +26,7 @@ class ChatBubble extends StatelessWidget {
             mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Bot-Icon (links)
+              // Bot icon (left)
               if (!isUser)
                 CircleAvatar(
                   radius: 16,
@@ -33,7 +35,7 @@ class ChatBubble extends StatelessWidget {
                 ),
               if (!isUser) const SizedBox(width: 8),
 
-              // Chat-Bubble
+              // Chat bubble container
               Flexible(
                 child: Container(
                   padding: const EdgeInsets.all(12),
@@ -60,7 +62,7 @@ class ChatBubble extends StatelessWidget {
               ),
 
               if (isUser) const SizedBox(width: 8),
-              // User-Icon (rechts)
+              // User icon (right)
               if (isUser)
                 CircleAvatar(
                   radius: 16,
@@ -110,6 +112,8 @@ class ChatBubble extends StatelessWidget {
   }
 }
 
+/// Widget that displays animated loading dots.
+/// Used to indicate that the bot is typing a response.
 class _LoadingDots extends StatefulWidget {
   const _LoadingDots();
 

@@ -18,7 +18,7 @@ class ChatApi {
     if (response.statusCode == 200) {
       yield* response.stream.transform(utf8.decoder);
     } else {
-      yield 'Fehler vom Server (${response.statusCode})';
+      yield 'Server error (${response.statusCode})';
     }
   }
 }
