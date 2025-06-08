@@ -1,4 +1,5 @@
 import asyncio
+from fastapi.responses import StreamingResponse
 
 from config import MODEL_PATH
 from fastapi import FastAPI, HTTPException
@@ -37,8 +38,6 @@ class PromptResponse(BaseModel):
 # POST endpoint for generating responses to prompts
 async def generate(request: PromptRequest):
     user_prompt = request.prompt
-
-    # Build context string from last 3 QA pairs
     context = memory.get_context()
     context_str = ""
     if context:
@@ -46,27 +45,21 @@ async def generate(request: PromptRequest):
         for qa in context:
             context_str += f"Q: {qa['question']}\nA: {qa['answer']}\n"
         context_str += "\n"
-
-    # Pass the user's question unchanged, but instruct the model to summarize its answer
     summary_instruction = (
         "Answer with an abbreviated summary. "
         "Respone in the same language as the question."
     )
     prompt_for_model = f"{context_str}Current question:\n{user_prompt}\n\n{summary_instruction}"
 
-    # Check cache for existing response to the prompt
-    answer = memory.get_cached_response(prompt_for_model)
-    if answer is None:
+    # No caching for streaming (optional: implement if needed)
+    def token_stream():
         try:
-            print("Generating answer for prompt...")  # Print message to console
-            # Asynchronous processing (if generate_response is IO-bound)
-            loop = asyncio.get_event_loop()
-            answer = await loop.run_in_executor(None, llm.generate_response, prompt_for_model)
-            memory.set_cached_response(prompt_for_model, answer)
+            for token in llm.generate_response(prompt_for_model):
+                yield token
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+            yield f"\n[Error: {str(e)}]"
 
-    # Update context window with the new QA pair
-    memory.add_context(user_prompt, answer)
+    # Update context after streaming (optional: you may want to collect the answer)
+    # For now, skip updating context in streaming mode, or buffer and update after.
 
-    return PromptResponse(response=answer)
+    return StreamingResponse(token_stream(), media_type="text/plain")

@@ -4,7 +4,7 @@ from time import time
 from config import HOST, PORT, RATE_LIMIT, RATE_PERIOD
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from prompt import PromptRequest, generate  # import PromptRequest
+from prompt import (PromptRequest, generate)
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -33,9 +33,8 @@ async def generate_response(request: PromptRequest):
         raise HTTPException(status_code=429, detail="Too many requests. Please wait a moment.")
     request_times.append(now)
 
-    # Generate response using the imported generate function
-    response_obj = await generate(request)
-    return {"response": response_obj.response}
+    # Stream response using the imported stream_generate function
+    return await generate(request)
 
 # Run the app with Uvicorn if this file is executed directly
 if __name__ == "__main__":

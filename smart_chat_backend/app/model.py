@@ -9,6 +9,9 @@ class LLMWrapper:
             raise FileNotFoundError(f"Model file not found at {model_path}")
         self.model = Llama(model_path=model_path, n_ctx=2048)
 
-    def generate_response(self, prompt: str) -> str:
-        result = self.model(prompt, max_tokens=200)
-        return result["choices"][0]["text"].strip()
+    def generate_response(self, prompt: str):
+        # Stream tokens as they are generated
+        for chunk in self.model(prompt, max_tokens=200, stream=True):
+            token = chunk["choices"][0]["text"]
+            if token:
+                yield token
