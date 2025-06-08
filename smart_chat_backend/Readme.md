@@ -81,9 +81,9 @@ Swagger-Doku (Testoberfläche):
 ## Anfrage an Server schicken
 
 ```sh
-curl -X POST "http://localhost:8000/generate" ^
-     -H "Content-Type: application/json" ^
-     -d "{\"prompt\": \"Was ist die Hauptstadt von Deutschland?\"}"
+curl -X POST "http://localhost:8000/generate" 
+    -H "Content-Type: application/json" 
+    -d "{\"prompt\": \"Was ist die Hauptstadt von Deutschland?\"}"
 ```
 
 
