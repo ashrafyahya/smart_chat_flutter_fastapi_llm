@@ -40,35 +40,42 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     });
 
-    // Verwende die neue API-Funktion und fange mögliche Fehler ab
-    var botReply;
-    try {
-      botReply = await ChatApi.fetchBotResponse(text);
-    } catch (e) {
-      print('Error fetching bot response: $e');
-      botReply = 'Entschuldigung, es gab einen Fehler.';
-    }
+      try {
+        await for (final chunk in ChatApi.fetchBotResponse(text)) {
+          setState(() {
+            if (_messages.isNotEmpty &&
+                _messages.last.sender == Sender.bot) {
+              // Update the last bot message with new chunk
+              _messages[_messages.length - 1] =
+                  ChatMessage(text: _messages.last.text + chunk, sender: Sender.bot);
+            } else {
+              // This case should not happen, but just in case, add a new bot message
+              _messages.add(ChatMessage(text: chunk, sender: Sender.bot));
+            }
+          });
+
+          // Scroll to bottom on each chunk
+          Future.delayed(const Duration(milliseconds: 100), () {
+            _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          });
+        }
+      } catch (e) {
+        print('Error fetching bot response: $e');
+        setState(() {
+          if (_messages.isNotEmpty &&
+              _messages.last.sender == Sender.bot) {
+            _messages.removeLast();
+          }
+          _messages.add(ChatMessage(text: 'Entschuldigung, es gab einen Fehler.', sender: Sender.bot));
+        });
+      }
 
     setState(() {
-      // Lade-Bubble entfernen
-      if (_messages.isNotEmpty &&
-          _messages.last.text == '' &&
-          _messages.last.sender == Sender.bot &&
-          _isLoading) {
-        _messages.removeLast();
-      }
-      // Bot-Antwort hinzufügen
-      _messages.add(ChatMessage(text: botReply, sender: Sender.bot));
       _isLoading = false;
-    });
-
-    // Scrollen nach Bot-Message
-    Future.delayed(const Duration(milliseconds: 100), () {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
     });
   }
 

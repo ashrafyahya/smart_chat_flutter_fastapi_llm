@@ -47,7 +47,7 @@ async def generate(request: PromptRequest):
         context_str += "\n"
     summary_instruction = (
         "Answer with an abbreviated summary. "
-        "Respone in the same language as the question."
+        "System: You must answer in the same language as the question."
         "Do not remark the answer with 'Answer: ' or similar phrases."
         "Don not remarks instruction in the answer, that was given to you."
     )
