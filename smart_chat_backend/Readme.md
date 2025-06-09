@@ -1,7 +1,7 @@
 # 🧠 LLM Chat Backend (FastAPI + llama.cpp)
 
 Ein leichtgewichtiges, vollständig **offline** laufendes Backend für ein Smart-Chat-System mit einem lokalen LLM (Large Language Model), z. B. **LLaMA (gguf)** über [llama.cpp](https://github.com/ggerganov/llama.cpp).  
-Ideal für Flutter-Apps oder andere Clients, die lokal mit einem Chatmodell kommunizieren sollen.
+Ideal für Apps oder andere Clients, die lokal mit einem Chatmodell kommunizieren sollen.
 
 ---
 
@@ -20,7 +20,9 @@ Ideal für Flutter-Apps oder andere Clients, die lokal mit einem Chatmodell komm
 smart_chat_backend/
 ├── app/
 │   ├── chat.py          # FastAPI entrypoint
+│   ├── memory.py        # Modell-Gedächtnis  
 │   ├── model.py         # Modellanbindung llama.cpp
+│   ├── prompt.py        # Prmpt für Modell
 ├── config.py            # Projektweite Konfiguration (Modellpfad, Host, Port)
 ├── requirements.txt     # Python-Abhängigkeiten
 ├── server.py            # Startet den Server
@@ -41,12 +43,12 @@ smart_chat_backend/
 
     ```sh
     # Projekt klonen oder neu anlegen
-    git clone <dieses-repo> smart_chat_backend
+    git clone https://github.com/ashrafyahya/smart_chat.git
     cd smart_chat_backend
 
-    # Virtuelle Umgebung erstellen
-    python -m venv .venv
-    .venv\Scripts\activate   # Windows
+    # Virtuelle Umgebung erstellen bzw. starten
+    python -m venv .venv     # Erstellen
+    .venv\Scripts\activate   # Starten auf Windows
 
     # Abhängigkeiten installieren
     pip install -r requirements.txt
@@ -73,9 +75,6 @@ Mit --reload: Server startet bei jeder Änderung automatisch neu (nur für Entwi
 Läuft auf:  
 📍 http://127.0.0.1:8000
 
-Swagger-Doku (Testoberfläche):  
-📄 http://127.0.0.1:8000/docs
-
 ---
 
 ## Anfrage an Server schicken
@@ -83,7 +82,7 @@ Swagger-Doku (Testoberfläche):
 ```sh
 curl -X POST "http://localhost:8000/generate" 
     -H "Content-Type: application/json" 
-    -d "{\"prompt\": \"Was ist die Hauptstadt von Deutschland?\"}"
+    -d "{\"prompt\": \"Was ist der Wert von PI?\"}"
 ```
 
 
