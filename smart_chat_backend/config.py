@@ -1,5 +1,5 @@
 # Path to the language model file
-MODEL_PATH = "D:/Downloads/mistral-7b-openorca.gguf2.Q4_0.gguf"
+MODEL_PATH = "../mistral-7b-openorca.gguf2.Q4_0.gguf"
 
 # Uvicorn app module path
 APP_MODULE = "app.chat:app"
