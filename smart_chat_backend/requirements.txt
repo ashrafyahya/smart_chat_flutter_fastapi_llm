@@ -1,4 +1,4 @@
 fastapi
-uvicorn
-gpt4all
+llama-cpp-python
 pydantic
+uvicorn
