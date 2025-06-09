@@ -82,7 +82,7 @@ smart-chat/
 ├── frontend/
 └── README.md
 ```
-## 🧪 Testen & Debugging
+## 🧪 5. Testen & Debugging
 
 **Flutter:**
 
