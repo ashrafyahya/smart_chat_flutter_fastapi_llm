@@ -13,18 +13,6 @@ Stelle sicher, dass folgende Software auf deinem System installiert ist:
 ❗ Wenn du Flutter noch nicht installiert hast:  
 👉 [Flutter Installation Guide](https://docs.flutter.dev/get-started/install)
 
-## 🚀 Projekt initialisieren
-
-### 1. Neues Flutter-Projekt erstellen
-
-```bash
-flutter create smart_chat_frontend 
-```
-
-### 2. Projektverzeichnis betreten
-$cd smart-chat-frontend
-
-
 
 ## 📦 Dependencies
 
@@ -47,20 +35,9 @@ flutter pub add --dev flutter_lints
 - flutter_test (SDK)
 - flutter_lints: ^6.0.0
 
-Zum Installieren der Abhängigkeiten führe im Projektverzeichnis aus:
 
-```bash
-flutter pub get
-```
-
-
-
-## ▶️ Projekt starten
-Starte deine App auf einem Emulator oder echten Gerät:
-```flutter build web```
-```flutter run```
-----------------------------------------------------------------------------
-🧱 Projektstruktur planen
+## 🚀 Projekt
+### 🧱 Projektstruktur
 
 lib/
 ├── main.dart                   → Einstiegspunkt der App
@@ -75,20 +52,46 @@ lib/
 │       ├── chat_screen.dart
 │   └── main.dart
 ├── core/                       → Globale Dienste, Logging, Exceptions
-├── shared/                     → Wiederverwendbare Widgets, Utils
+├── shared/   
 
 
-✅ Tooling & Linting
+### 🔧 Setup
+
+- Projekt klonen: 
+```sh
+git clone https://github.com/ashrafyahya/smart_chat.git
+cd smart_chat_frontend
+```
+
+- Zum Installieren der Abhängigkeiten führe im Projektverzeichnis aus:
+
+```bash
+flutter pub get
+```
+
+
+- Projekt starten
+```flutter build web```
+```flutter run```
+
+
+### Wie kann ein Flutter Projekt angelegt werden?
+
+-Nutze den folgenden Befehl:
+```bash
+flutter create Projek-Name 
+```
+
+- Projektverzeichnis betreten
+$cd Projekt-Name
+
+
+### Tooling & Linting
 Formatieren
 ```flutter format .```
 
-
 Analysieren
 ```flutter analyze```
-
-📱 Build für Web / Android / iOS
-- Web
-```flutter build web```
 
 Dart Language
 https://dart.dev/
@@ -99,4 +102,3 @@ Eigene Notizen
 - flutter pub outdated
 - flutter pub upgrade
 - flutter pub upgrade --major-versions
-- 
