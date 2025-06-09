@@ -78,7 +78,7 @@ flutter pub get
 
 ### Wie kann ein Flutter Projekt angelegt werden?
 
--Nutze den folgenden Befehl:
+- Nutze den folgenden Befehl:
 ```bash
 flutter create Projek-Name 
 ```
@@ -88,17 +88,17 @@ $cd Projekt-Name
 
 
 ### Tooling & Linting
-Formatieren
+- Formatieren
 ```flutter format .```
 
-Analysieren
+- Analysieren
 ```flutter analyze```
 
-Dart Language
+- Dart Language
 https://dart.dev/
 
 
-Eigene Notizen
+### Eigene Notizen
 - start ms-settings:developers
 - flutter pub outdated
 - flutter pub upgrade
