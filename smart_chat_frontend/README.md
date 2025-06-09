@@ -1,4 +1,4 @@
-# 🧠 Smart Chat Frontend (Flutter Version)
+# 🧠 Smart Chat Frontend
 
 Smart Chat Frontend ist eine Chat-App, die mit Flutter entwickelt wurde. Sie bietet eine intuitive Benutzeroberfläche und nutzt aktuelle Technologien wie Provider und Flutter Hooks für ein reaktives und wartbares App-Design. Dieses Repository enthält den Frontend-Code für die Smart Chat App.
 
@@ -40,21 +40,21 @@ flutter pub add --dev flutter_lints
 
 ## 🚀 Projekt
 ### 🧱 Projektstruktur
-
 lib/
-├── main.dart                   → Einstiegspunkt der App
-├── features/chat               → Chat-spezifische Logik & UI
-│   ├── data/                   → Modelle, APIs, DTOs
-│       ├── chat_api.dart
-│   ├── domain/                 → Services, Business Logic
-│       ├── chat_message.dart
-│   ├── presentaion/            → UI-Komponenten (Widgets, Screens)
-│       ├── widgets/
-│           ├── chat_bubble.dart
-│       ├── chat_screen.dart
-│   └── main.dart
-├── core/                       → Globale Dienste, Logging, Exceptions
-├── shared/   
+├── main.dart &emsp;&emsp;&emsp; // Entry point of the app  
+├── features/
+│   └── chat/ &emsp;&emsp;&emsp; // Chat-specific logic & UI  
+│       ├── data/ &emsp;&emsp;&emsp; // Models, APIs, DTOs  
+│       │   └── chat_api.dart  
+│       ├── domain/ &emsp;&emsp;&emsp; // Services, business logic  
+│       │   └── chat_message.dart  
+│       ├── presentaion/ &emsp;&emsp;&emsp; // UI components (widgets, screens)  
+│       │   ├── widgets/  
+│       │   │   └── chat_bubble.dart  
+│       │   └── chat_screen.dart  
+│       └── main.dart  
+├── core/
+├── shared/
 
 
 ### 🔧 Setup
@@ -70,7 +70,6 @@ cd smart_chat_frontend
 ```bash
 flutter pub get
 ```
-
 
 - Projekt starten
 ```flutter build web```
