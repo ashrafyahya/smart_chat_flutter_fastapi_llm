@@ -1,5 +1,7 @@
 # 🧠 Smart Chat Frontend (Flutter Version)
 
+Smart Chat Frontend ist eine Chat-App, die mit Flutter entwickelt wurde. Sie bietet eine intuitive Benutzeroberfläche und nutzt aktuelle Technologien wie Provider und Flutter Hooks für ein reaktives und wartbares App-Design. Dieses Repository enthält den Frontend-Code für die Smart Chat App.
+
 ## 🛠️ Voraussetzungen (lokal)
 
 Stelle sicher, dass folgende Software auf deinem System installiert ist:
