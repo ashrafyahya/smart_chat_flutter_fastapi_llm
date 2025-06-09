@@ -74,7 +74,7 @@
 | LLM Wrapper      | z. B. llama-cpp-python           |
 | Virtualenv       | Isolierte Umgebung               |
 
-## 📁 4. Projektstruktur (Vorschlag)
+## 📁 4. Projektstruktur
 
 ```txt
 smart-chat/
