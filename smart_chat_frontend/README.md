@@ -9,7 +9,6 @@ Stelle sicher, dass folgende Software auf deinem System installiert ist:
 | Flutter SDK      | UI-Framework für Mobile/Web   | `flutter --version`      |
 | Dart SDK         | Programmiersprache            | Wird mit Flutter geliefert |
 | VS Code          | Code-Editor                   | ✅ Visual Studio Code     |
-| Android Studio   | Emulator + SDK Manager        | ✅ empfohlen für Android  |
 
 ❗ Wenn du Flutter noch nicht installiert hast:  
 👉 [Flutter Installation Guide](https://docs.flutter.dev/get-started/install)
@@ -27,21 +26,31 @@ $cd smart-chat-frontend
 
 
 
-## 📦 Empfohlene Zusatzpakete
+## 📦 Dependencies
 
-Installiere zusätzliche Pakete für bessere Struktur und Features:
+Die Abhängigkeiten werden im `pubspec.yaml` verwaltet. Die wichtigsten Pakete in diesem Projekt sind:
 
-```bash
-flutter pub add provider
-flutter pub add flutter_hooks
-flutter pub add go_router
-flutter pub add flutter_svg
-flutter pub add http
-```
 ➕ Dev-Dependencies (für Codequalität)
 ```bash
 flutter pub add --dev very_good_analysis
 flutter pub add --dev flutter_lints 
+```
+
+**Dependencies:**
+- flutter (SDK)
+- provider: ^6.1.0
+- flutter_hooks: ^0.21.2
+- http: ^1.1.0
+- share_plus: ^11.0.0
+
+**Dev Dependencies:**
+- flutter_test (SDK)
+- flutter_lints: ^6.0.0
+
+Zum Installieren der Abhängigkeiten führe im Projektverzeichnis aus:
+
+```bash
+flutter pub get
 ```
 
 
@@ -51,22 +60,22 @@ Starte deine App auf einem Emulator oder echten Gerät:
 ```flutter build web```
 ```flutter run```
 ----------------------------------------------------------------------------
------------------------------------------------------------------
-🧱 Schritt 1: Projektstruktur planen
+🧱 Projektstruktur planen
 
 lib/
-├── main.dart                → Einstiegspunkt der App
-├── app/                    → Routing, Theme, App-Shell
-│   ├── app.dart
-│   ├── app_router.dart
-│   └── app_theme.dart
-├── features/
-│   └── chat/               → Chat-spezifische Logik & UI
-│       ├── data/           → Modelle, APIs, DTOs
-│       ├── domain/         → Services, Business Logic
-│       └── presentation/   → UI-Komponenten (Widgets, Screens)
-├── core/                   → Globale Dienste, Logging, Exceptions
-├── shared/                 → Wiederverwendbare Widgets, Utils
+├── main.dart                   → Einstiegspunkt der App
+├── features/chat               → Chat-spezifische Logik & UI
+│   ├── data/                   → Modelle, APIs, DTOs
+│       ├── chat_api.dart
+│   ├── domain/                 → Services, Business Logic
+│       ├── chat_message.dart
+│   ├── presentaion/            → UI-Komponenten (Widgets, Screens)
+│       ├── widgets/
+│           ├── chat_bubble.dart
+│       ├── chat_screen.dart
+│   └── main.dart
+├── core/                       → Globale Dienste, Logging, Exceptions
+├── shared/                     → Wiederverwendbare Widgets, Utils
 
 
 ✅ Tooling & Linting
@@ -78,7 +87,7 @@ Analysieren
 ```flutter analyze```
 
 📱 Build für Web / Android / iOS
-Web
+- Web
 ```flutter build web```
 
 Dart Language
